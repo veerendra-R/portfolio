@@ -4,978 +4,366 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veerendra R | Data Engineer & Full-Stack Developer</title>
-    <meta name="description" content="Results-driven Data Engineer & Full-Stack Developer with expertise in Python, Apache Airflow, AWS Glue, PySpark, React.js, and Next.js">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Results-driven Data Engineer & Full-Stack Developer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --dark: #0f172a;
-            --light: #f8fafc;
+            --primary: #00f5d4;
+            --secondary: #7b2cbf;
+            --accent: #f72585;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --light: #ffffff;
+            --gray: #8892b0;
+            --gradient-1: linear-gradient(135deg, #00f5d4 0%, #00bbf9 50%, #7b2cbf 100%);
+            --gradient-2: linear-gradient(135deg, #f72585 0%, #7b2cbf 100%);
+            --glow: 0 0 40px rgba(0,245,212,0.3);
         }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-            background-color: #f1f5f9;
-            color: #0f172a;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--darker); color: var(--light); overflow-x: hidden; }
+
+        .cursor { width: 20px; height: 20px; border: 2px solid var(--primary); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: all 0.1s ease; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-follower { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: all 0.08s ease; transform: translate(-50%, -50%); }
+
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .bg-animation::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 20% 80%, rgba(0,245,212,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(123,44,191,0.08) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(247,37,133,0.05) 0%, transparent 40%); animation: bgFloat 20s ease-in-out infinite; }
+        @keyframes bgFloat { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(2%, 2%) rotate(1deg); } 66% { transform: translate(-1%, 1%) rotate(-1deg); } }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; width: 4px; height: 4px; background: var(--primary); border-radius: 50%; opacity: 0.3; animation: particleFloat 15s infinite ease-in-out; }
+        @keyframes particleFloat { 0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 90% { opacity: 0.3; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+
+        .grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px); background-size: 80px 80px; z-index: -1; }
+
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        nav.scrolled { background: rgba(5,5,8,0.9); backdrop-filter: blur(20px); padding: 1rem 3rem; border-bottom: 1px solid rgba(0,245,212,0.1); }
+        .logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -1px; text-decoration: none; }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--gradient-1); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 30px; height: 2px; background: var(--primary); transition: all 0.3s ease; }
+
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 0 5%; position: relative; overflow: hidden; }
+        .hero-content { max-width: 800px; z-index: 1; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; background: rgba(0,245,212,0.1); border: 1px solid rgba(0,245,212,0.3); border-radius: 50px; font-size: 0.85rem; color: var(--primary); margin-bottom: 2rem; animation: fadeInUp 1s ease forwards; opacity: 0; }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; animation: fadeInUp 1s ease 0.2s forwards; opacity: 0; }
+        .hero h1 .highlight { background: var(--gradient-1); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .hero-subtitle { font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--gray); margin-bottom: 2.5rem; line-height: 1.7; max-width: 600px; animation: fadeInUp 1s ease 0.4s forwards; opacity: 0; }
+        .hero-cta { display: flex; gap: 1.5rem; flex-wrap: wrap; animation: fadeInUp 1s ease 0.6s forwards; opacity: 0; }
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; gap: 0.75rem; }
+        .btn-primary { background: var(--gradient-1); color: var(--dark); box-shadow: var(--glow); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(0,245,212,0.5); }
+        .btn-secondary { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: var(--light); }
+        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+        .hero-visual { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 450px; height: 450px; animation: fadeIn 1.5s ease 0.8s forwards; opacity: 0; }
+        .hero-image-container { position: relative; width: 100%; height: 100%; }
+        .hero-image { width: 320px; height: 320px; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; object-fit: cover; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 3px solid rgba(0,245,212,0.3); animation: morphing 10s ease-in-out infinite; }
+        @keyframes morphing { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } 75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; } }
+        .hero-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(0,245,212,0.2); border-radius: 50%; animation: ringPulse 4s ease-in-out infinite; }
+        .hero-ring:nth-child(1) { width: 360px; height: 360px; animation-delay: 0s; }
+        .hero-ring:nth-child(2) { width: 400px; height: 400px; animation-delay: 0.5s; }
+        .hero-ring:nth-child(3) { width: 440px; height: 440px; animation-delay: 1s; }
+        @keyframes ringPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.1; } }
+        .floating-icons { position: absolute; width: 100%; height: 100%; }
+        .floating-icon { position: absolute; width: 50px; height: 50px; background: rgba(0,245,212,0.1); border: 1px solid rgba(0,245,212,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); animation: float 6s ease-in-out infinite; }
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 5%; animation-delay: 1s; }
+        .floating-icon:nth-child(3) { bottom: 20%; left: 5%; animation-delay: 2s; }
+        .floating-icon:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 1.5s; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        .scroll-indicator { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeInUp 1s ease 1s forwards; opacity: 0; }
+        .scroll-indicator span { font-size: 0.75rem; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; }
+        .scroll-indicator .mouse { width: 25px; height: 40px; border: 2px solid var(--gray); border-radius: 20px; position: relative; }
+        .scroll-indicator .mouse::before { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--primary); border-radius: 2px; animation: scrollAnim 2s infinite; }
+        @keyframes scrollAnim { 0% { opacity: 1; top: 8px; } 100% { opacity: 0; top: 20px; } }
+
+        section { padding: 8rem 5%; position: relative; }
+        .section-header { text-align: center; margin-bottom: 5rem; }
+        .section-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--primary); padding: 0.5rem 1rem; background: rgba(0,245,212,0.1); border-radius: 4px; margin-bottom: 1rem; letter-spacing: 2px; }
+        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .section-subtitle { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .about { background: linear-gradient(180deg, rgba(0,245,212,0.05) 0%, transparent 50%); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .about-image { position: relative; }
+        .about-image img { width: 100%; max-width: 400px; border-radius: 20px; position: relative; z-index: 1; }
+        .about-image::before { content: ''; position: absolute; top: -20px; left: -20px; width: 100%; height: 100%; border: 2px solid var(--primary); border-radius: 20px; z-index: 0; }
+        .about-image::after { content: ''; position: absolute; bottom: -20px; right: -20px; width: 150px; height: 150px; background: var(--gradient-2); border-radius: 20px; z-index: 0; opacity: 0.3; }
+        .about-content h3 { font-family: 'Syne', sans-serif; font-size: 1.8rem; margin-bottom: 1.5rem; }
+        .about-content p { color: var(--gray); line-height: 1.8; margin-bottom: 1.5rem; font-size: 1rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+        .stat-card { text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; transition: all 0.4s ease; }
+        .stat-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: var(--glow); }
+        .stat-number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-label { color: var(--gray); font-size: 0.85rem; margin-top: 0.5rem; }
+
+        .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .skill-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .skill-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--gradient-1); opacity: 0; transition: opacity 0.4s ease; z-index: 0; }
+        .skill-card:hover { transform: translateY(-8px) scale(1.02); border-color: transparent; }
+        .skill-card:hover::before { opacity: 0.05; }
+        .skill-card > * { position: relative; z-index: 1; }
+        .skill-icon { width: 55px; height: 55px; background: var(--gradient-1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--dark); margin-bottom: 1.2rem; }
+        .skill-card h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; margin-bottom: 1rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-tag { padding: 0.4rem 0.9rem; background: rgba(0,245,212,0.1); border: 1px solid rgba(0,245,212,0.2); border-radius: 50px; font-size: 0.8rem; color: var(--primary); transition: all 0.3s ease; }
+        .skill-tag:hover { background: var(--primary); color: var(--dark); }
+
+        .experience { background: linear-gradient(180deg, rgba(0,245,212,0.05) 0%, transparent 50%); }
+        .timeline { position: relative; max-width: 850px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px; background: linear-gradient(to bottom, var(--primary), var(--secondary)); }
+        .timeline-item { position: relative; padding-left: 45px; margin-bottom: 3.5rem; opacity: 0; transform: translateX(-30px); animation: slideIn 0.6s ease forwards; }
+        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.6s; }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        .timeline-dot { position: absolute; left: -8px; top: 0; width: 18px; height: 18px; background: var(--dark); border: 3px solid var(--primary); border-radius: 50%; box-shadow: var(--glow); }
+        .timeline-content { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2rem; transition: all 0.4s ease; }
+        .timeline-content:hover { border-color: rgba(0,245,212,0.3); transform: translateX(8px); }
+        .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.8rem; }
+        .timeline-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; }
+        .timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--primary); padding: 0.25rem 0.7rem; background: rgba(0,245,212,0.1); border-radius: 4px; }
+        .timeline-company { color: var(--gray); font-size: 1rem; margin-bottom: 0.3rem; }
+        .timeline-client { color: var(--accent); font-size: 0.9rem; margin-bottom: 1.2rem; }
+        .timeline-list { list-style: none; }
+        .timeline-list li { position: relative; padding-left: 1.3rem; margin-bottom: 0.6rem; color: var(--gray); line-height: 1.6; font-size: 0.95rem; }
+        .timeline-list li::before { content: '▹'; position: absolute; left: 0; color: var(--primary); }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .project-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .project-card:hover { transform: translateY(-12px); border-color: var(--primary); box-shadow: 0 30px 60px rgba(0,0,0,0.3), var(--glow); }
+        .project-image { position: relative; height: 200px; overflow: hidden; }
+        .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .project-card:hover .project-image img { transform: scale(1.1); }
+        .project-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--darker) 0%, transparent 100%); }
+        .project-year { position: absolute; top: 1rem; right: 1rem; padding: 0.35rem 0.9rem; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--primary); z-index: 1; }
+        .project-content { padding: 1.5rem; }
+        .project-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .project-subtitle { color: var(--primary); font-size: 0.85rem; margin-bottom: 1rem; }
+        .project-list { list-style: none; margin-bottom: 1.2rem; }
+        .project-list li { position: relative; padding-left: 1.3rem; margin-bottom: 0.5rem; color: var(--gray); font-size: 0.9rem; line-height: 1.5; }
+        .project-list li::before { content: '◆'; position: absolute; left: 0; color: var(--primary); font-size: 0.5rem; top: 0.4rem; }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .project-tech span { padding: 0.35rem 0.7rem; background: rgba(123,44,191,0.2); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--light); }
+
+        .education { background: linear-gradient(180deg, rgba(0,245,212,0.05) 0%, transparent 50%); }
+        .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2rem; }
+        .edu-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; transition: all 0.4s ease; }
+        .edu-card:hover { border-color: rgba(0,245,212,0.3); transform: translateY(-5px); }
+        .edu-card h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .edu-card .institution { color: var(--primary); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .edu-card .period { color: var(--gray); font-size: 0.85rem; margin-bottom: 1.2rem; }
+        .cert-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .cert-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: rgba(0,245,212,0.05); border-radius: 10px; transition: all 0.3s ease; }
+        .cert-item:hover { background: rgba(0,245,212,0.1); transform: translateX(5px); }
+        .cert-item i { font-size: 1.3rem; color: var(--primary); }
+        .cert-item .cert-info h4 { font-size: 0.95rem; margin-bottom: 0.15rem; }
+        .cert-item .cert-info p { color: var(--gray); font-size: 0.8rem; }
+        .languages-grid { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 4rem; }
+        .lang-card { width: 130px; padding: 1.5rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; text-align: center; transition: all 0.4s ease; }
+        .lang-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--glow); }
+        .lang-card i { font-size: 2rem; color: var(--primary); margin-bottom: 0.8rem; }
+        .lang-card h4 { font-size: 1rem; margin-bottom: 0.2rem; }
+        .lang-card p { color: var(--gray); font-size: 0.8rem; }
+
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1100px; margin: 0 auto; }
+        .contact-info h3 { font-family: 'Syne', sans-serif; font-size: 1.8rem; margin-bottom: 1.2rem; }
+        .contact-info p { color: var(--gray); line-height: 1.8; margin-bottom: 1.5rem; }
+        .contact-links { display: flex; flex-direction: column; gap: 1.2rem; }
+        .contact-link { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; text-decoration: none; color: var(--light); transition: all 0.4s ease; }
+        .contact-link:hover { border-color: var(--primary); transform: translateX(8px); box-shadow: var(--glow); }
+        .contact-link i { width: 45px; height: 45px; background: var(--gradient-1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--dark); }
+        .contact-link span { font-size: 1rem; }
+        .contact-form { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 2.5rem; }
+        .contact-form h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--gray); font-size: 0.85rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.9rem 1.2rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--light); font-family: 'Outfit', sans-serif; font-size: 0.95rem; transition: all 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 20px rgba(0,245,212,0.1); }
+        .form-group textarea { min-height: 130px; resize: vertical; }
+        .submit-btn { width: 100%; padding: 1rem; background: var(--gradient-1); border: none; border-radius: 10px; color: var(--dark); font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.4s ease; }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: var(--glow); }
+
+        footer { padding: 3rem 5%; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .footer-content { max-width: 500px; margin: 0 auto; }
+        .footer-logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.8rem; }
+        .footer-text { color: var(--gray); margin-bottom: 1.5rem; }
+        .social-links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .social-links a { width: 45px; height: 45px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--light); font-size: 1.1rem; transition: all 0.4s ease; }
+        .social-links a:hover { background: var(--primary); color: var(--dark); transform: translateY(-5px); box-shadow: var(--glow); }
+        .copyright { color: var(--gray); font-size: 0.85rem; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; background: var(--primary); color: var(--dark); border-radius: 10px; font-weight: 600; transform: translateX(150%); transition: transform 0.4s ease; z-index: 9999; }
+        .toast.show { transform: translateX(0); }
+
+        @media (max-width: 1024px) {
+            .hero-visual { display: none; }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .about-image { order: -1; display: flex; justify-content: center; }
+            .contact-container { grid-template-columns: 1fr; }
         }
-        
-        .dark {
-            background-color: #020617;
-            color: #f8fafc;
-        }
-        
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .dark .glass {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .section {
-            min-height: 100vh;
-            padding-top: 80px;
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .nav-link.active::after {
-            width: 100%;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -30px;
-            top: 0;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            border: 3px solid white;
-        }
-        
-        .dark .timeline-item::before {
-            border-color: #0f172a;
-        }
-        
-        .project-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        
-        .skill-card {
-            transition: all 0.3s ease;
-        }
-        
-        .skill-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .toast {
-            animation: slideIn 0.5s forwards, fadeOut 0.5s 3s forwards;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        
-        .floating {
-            animation: floating 6s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        
-        .gradient-text {
-            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(45deg, #6366f1, #8b5cf6);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            filter: blur(50px);
-            opacity: 0.2;
-            z-index: 0;
-            animation: blobAnimation 15s infinite alternate;
-        }
-        
-        @keyframes blobAnimation {
-            0% { transform: translate(0, 0) rotate(0deg); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-            50% { transform: translate(50px, 50px) rotate(90deg); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-            100% { transform: translate(0, 0) rotate(180deg); border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-        }
-        
-        .hover-underline {
-            position: relative;
-        }
-        
-        .hover-underline::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-        
-        .hover-underline:hover::after {
-            width: 100%;
-        }
-        
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--darker); flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
+            .nav-links.active { display: flex; }
+            .nav-links a { font-size: 1.4rem; }
+            .menu-toggle { display: flex; }
+            .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+            .hero { padding: 0 1.5rem; padding-top: 100px; }
+            section { padding: 5rem 1.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .skills-container, .projects-grid, .edu-grid { grid-template-columns: 1fr; }
+            .cursor, .cursor-follower { display: none; }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 glass z-50 transition-all duration-300">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-2xl font-bold text-slate-800 dark:text-white hover:text-primary-500 transition-colors">
-                    <span class="gradient-text">Veerendra</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Home</a>
-                    <a href="#about" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">About</a>
-                    <a href="#skills" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Skills</a>
-                    <a href="#experience" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Experience</a>
-                    <a href="#projects" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Projects</a>
-                    <a href="#contact" class="nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Contact</a>
-                    
-                    <button id="theme-toggle" class="p-2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                        <i class="fas fa-moon dark:hidden"></i>
-                        <i class="fas fa-sun hidden dark:block"></i>
-                    </button>
-                </div>
-                
-                <button id="mobile-menu-button" class="md:hidden text-slate-700 dark:text-slate-300">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
-            
-            <!-- Mobile menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-                <a href="#home" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Home</a>
-                <a href="#about" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">About</a>
-                <a href="#skills" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Skills</a>
-                <a href="#experience" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Experience</a>
-                <a href="#projects" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Projects</a>
-                <a href="#contact" class="block nav-link text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">Contact</a>
-                
-                <div class="flex justify-center">
-                    <button id="theme-toggle-mobile" class="p-2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
-                        <i class="fas fa-moon dark:hidden"></i>
-                        <i class="fas fa-sun hidden dark:block"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="bg-animation"></div>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <nav id="navbar">
+        <a href="#" class="logo">Veerendra.</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero section flex items-center justify-center text-white relative overflow-hidden">
-        <div class="blob top-[-150px] left-[-150px]"></div>
-        <div class="blob bottom-[-150px] right-[-150px]"></div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span class="gradient-text">Veerendra R</span></h1>
-                    <h2 class="text-xl md:text-2xl mb-8 text-slate-200">Results-driven Data Engineer & Full-Stack Developer</h2>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#projects" class="px-6 py-3 bg-white text-indigo-600 rounded-full font-medium hover:bg-indigo-50 transition duration-300 shadow-lg hover:shadow-xl">View My Work</a>
-                        <a href="https://drive.google.com/file/d/1Qqr2wvXsHRdnB_WELdHNkof98PuXdYzn/view?usp=sharing" class="px-6 py-3 border-2 border-white text-white rounded-full font-medium hover:bg-white/10 transition duration-300 shadow-lg hover:shadow-xl">Download Resume</a>
-                    </div>
-                    
-                    <div class="mt-12 flex space-x-6">
-                        <a href="https://linkedin.com/in/veerendra-r10" target="_blank" class="text-slate-200 hover:text-white transition duration-300">
-                            <i class="fab fa-linkedin-in text-2xl"></i>
-                        </a>
-                        <a href="https://github.com" target="_blank" class="text-slate-200 hover:text-white transition duration-300">
-                            <i class="fab fa-github text-2xl"></i>
-                        </a>
-                        <a href="mailto:veerendra.connectnow@gmail.com" class="text-slate-200 hover:text-white transition duration-300">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </a>
-                    </div>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span>Available for opportunities</div>
+            <h1>Building the<br><span class="highlight">Data Infrastructure</span><br>of Tomorrow</h1>
+            <p class="hero-subtitle">Systems Engineer at TCS | Crafting scalable ETL pipelines and full-stack solutions that transform raw data into business intelligence.</p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary"><span>View Projects</span><i class="fas fa-arrow-right"></i></a>
+                <a href="https://drive.google.com/file/d/1Qqr2wvXsHRdnB_WELdHNkof98PuXdYzn/view?usp=sharing" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i><span>Download CV</span></a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-image-container">
+                <div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div>
+                <img src="myimage.jpeg" alt="Veerendra R" class="hero-image">
+                <div class="floating-icons">
+                    <div class="floating-icon"><i class="fab fa-python"></i></div>
+                    <div class="floating-icon"><i class="fab fa-aws"></i></div>
+                    <div class="floating-icon"><i class="fab fa-react"></i></div>
+                    <div class="floating-icon"><i class="fas fa-database"></i></div>
                 </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80">
-                        <div class="absolute inset-0 bg-indigo-400 rounded-full opacity-20 blur-xl"></div>
-                        <img src="myimage.jpeg" 
-                             alt="Veerendra R" 
-                             class="relative w-full h-full rounded-full object-cover border-4 border-white/20 shadow-2xl floating glass">
-                    </div>
+            </div>
+        </div>
+        <div class="scroll-indicator"><span>Scroll</span><div class="mouse"></div></div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="section-header reveal"><span class="section-tag">// ABOUT ME</span><h2 class="section-title">Transforming Data Into Impact</h2><p class="section-subtitle">A passionate engineer dedicated to building robust data solutions</p></div>
+        <div class="about-grid">
+            <div class="about-image reveal"><img src="myimage.jpeg" alt="Veerendra R"></div>
+            <div class="about-content reveal">
+                <h3>Data Engineer & Full-Stack Developer</h3>
+                <p>With 3+ years of experience, I specialize in architecting scalable ETL pipelines, orchestrating complex data workflows, and building full-stack analytics applications that drive business decisions.</p>
+                <p>Currently at TCS working on the NatWest Banking project, I'm designing mission-critical ETL processes using AWS Glue and PostgreSQL for dormant account management—ensuring regulatory compliance while handling millions of financial records.</p>
+                <p>My journey spans from processing 5TB+ of advertising data at Innovatily to building unified dashboards integrating 10+ platforms.</p>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-number">3+</div><div class="stat-label">Years Experience</div></div>
+                    <div class="stat-card"><div class="stat-number">10+</div><div class="stat-label">Projects Delivered</div></div>
+                    <div class="stat-card"><div class="stat-number">40%</div><div class="stat-label">Pipeline Optimization</div></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section py-20 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">ABOUT ME</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Professional Profile</h2>
-            </div>
-            
-            <div class="flex flex-col md:flex-row items-center gap-12 glass p-8 rounded-3xl">
-                <div class="md:w-1/3 flex justify-center">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden shadow-2xl glass">
-                        <img src="myimage.jpeg" 
-                             alt="Veerendra R" 
-                             class="w-full h-full object-cover">
-                    </div>
-                </div>
-                
-                <div class="md:w-2/3">
-                    <p class="text-lg text-slate-700 dark:text-slate-300 mb-6">
-                        Results-driven Data Engineer with 3+ years of experience architecting scalable ETL pipelines, orchestrating data workflows, and building full-stack analytics applications. Currently working at TCS on the NatWest Banking project, specializing in AWS Glue and PostgreSQL for ETL processes handling dormant accounts.
-                    </p>
-                    <p class="text-lg text-slate-700 dark:text-slate-300 mb-6">
-                        Expert in Python, Apache Airflow, AWS Glue, PySpark, React.js, and Next.js, with a proven track record of reducing pipeline runtimes by up to 40%. Skilled at integrating 10+ advertising platforms into unified dashboards, delivering actionable insights and collaborating cross-functionally to enhance user experiences.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
-                        <div class="bg-indigo-50/50 dark:bg-slate-800/50 p-4 rounded-xl glass">
-                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">3+ Years</h3>
-                            <p class="text-slate-600 dark:text-slate-400">Experience</p>
-                        </div>
-                        <div class="bg-indigo-50/50 dark:bg-slate-800/50 p-4 rounded-xl glass">
-                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">10+</h3>
-                            <p class="text-slate-600 dark:text-slate-400">Projects</p>
-                        </div>
-                        <div class="bg-indigo-50/50 dark:bg-slate-800/50 p-4 rounded-xl glass">
-                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">40%</h3>
-                            <p class="text-slate-600 dark:text-slate-400">Pipeline Optimization</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="skills" id="skills">
+        <div class="section-header reveal"><span class="section-tag">// EXPERTISE</span><h2 class="section-title">Skills & Technologies</h2><p class="section-subtitle">The tools and technologies I use to bring ideas to life</p></div>
+        <div class="skills-container">
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-database"></i></div><h3>Data Engineering</h3><div class="skill-tags"><span class="skill-tag">Apache Airflow</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">PySpark</span><span class="skill-tag">ETL</span><span class="skill-tag">N8N</span></div></div>
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-code"></i></div><h3>Programming</h3><div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">C++</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span></div></div>
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-server"></i></div><h3>Databases</h3><div class="skill-tags"><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Oracle SQL</span><span class="skill-tag">AWS S3</span></div></div>
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-plug"></i></div><h3>APIs & Integration</h3><div class="skill-tags"><span class="skill-tag">REST APIs</span><span class="skill-tag">Google Ads API</span><span class="skill-tag">Meta Ads API</span><span class="skill-tag">Microsoft Ads</span></div></div>
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-cloud"></i></div><h3>Cloud & DevOps</h3><div class="skill-tags"><span class="skill-tag">AWS</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Lambda</span><span class="skill-tag">Step Functions</span></div></div>
+            <div class="skill-card reveal"><div class="skill-icon"><i class="fas fa-laptop-code"></i></div><h3>Frontend</h3><div class="skill-tags"><span class="skill-tag">React.js</span><span class="skill-tag">Next.js</span><span class="skill-tag">Tailwind CSS</span><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span></div></div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section py-20 bg-gradient-to-br from-indigo-50/50 to-slate-50/50 dark:from-slate-800/50 dark:to-slate-900/50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">MY EXPERTISE</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Skills & Technologies</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Data Engineering -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-indigo-100 dark:bg-indigo-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-database text-indigo-600 dark:text-indigo-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Data Engineering</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Apache Airflow</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">AWS Glue</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">PySpark</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">N8N</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">ETL</span>
-                    </div>
-                </div>
-                
-                <!-- Programming -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-code text-purple-600 dark:text-purple-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Programming</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-purple-100/50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm glass">Python</span>
-                        <span class="px-3 py-1 bg-purple-100/50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm glass">JavaScript</span>
-                        <span class="px-3 py-1 bg-purple-100/50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm glass">C++</span>
-                        <span class="px-3 py-1 bg-purple-100/50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm glass">Pandas</span>
-                        <span class="px-3 py-1 bg-purple-100/50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm glass">NumPy</span>
-                    </div>
-                </div>
-                
-                <!-- Databases -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-server text-green-600 dark:text-green-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Databases</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-green-100/50 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full text-sm glass">MongoDB</span>
-                        <span class="px-3 py-1 bg-green-100/50 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full text-sm glass">PostgreSQL</span>
-                        <span class="px-3 py-1 bg-green-100/50 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full text-sm glass">Oracle SQL</span>
-                        <span class="px-3 py-1 bg-green-100/50 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full text-sm glass">AWS S3</span>
-                    </div>
-                </div>
-                
-                <!-- APIs -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-plug text-yellow-600 dark:text-yellow-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">APIs & Integration</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-yellow-100/50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full text-sm glass">REST APIs</span>
-                        <span class="px-3 py-1 bg-yellow-100/50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full text-sm glass">Google Ads API</span>
-                        <span class="px-3 py-1 bg-yellow-100/50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full text-sm glass">Meta Ads API</span>
-                        <span class="px-3 py-1 bg-yellow-100/50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full text-sm glass">Microsoft Ads API</span>
-                    </div>
-                </div>
-                
-                <!-- Cloud & DevOps -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-red-100 dark:bg-red-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-cloud text-red-600 dark:text-red-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Cloud & DevOps</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-red-100/50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm glass">AWS</span>
-                        <span class="px-3 py-1 bg-red-100/50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm glass">Docker</span>
-                        <span class="px-3 py-1 bg-red-100/50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm glass">CI/CD</span>
-                        <span class="px-3 py-1 bg-red-100/50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm glass">Lambda</span>
-                        <span class="px-3 py-1 bg-red-100/50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm glass">Step Functions</span>
-                    </div>
-                </div>
-                
-                <!-- Front-End -->
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg skill-card glass">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-indigo-100 dark:bg-indigo-900/50 p-3 rounded-lg mr-4 glass">
-                            <i class="fas fa-laptop-code text-indigo-600 dark:text-indigo-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">Front-End</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">React.js</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Next.js</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">HTML5</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">CSS3</span>
-                        <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Tailwind CSS</span>
-                    </div>
-                </div>
-            </div>
+    <section class="experience" id="experience">
+        <div class="section-header reveal"><span class="section-tag">// CAREER PATH</span><h2 class="section-title">Professional Experience</h2><p class="section-subtitle">My journey in building data-driven solutions</p></div>
+        <div class="timeline">
+            <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-header"><h3 class="timeline-title">Systems Engineer - Data Engineer</h3><span class="timeline-date">Aug 2024 – Present</span></div><p class="timeline-company">Tata Consultancy Services (TCS)</p><p class="timeline-client">Client: NatWest Banking Group</p><ul class="timeline-list"><li>Designing and implementing ETL pipelines using AWS Glue for processing dormant account data in compliance with banking regulations</li><li>Developing and optimizing PostgreSQL database schemas and queries for efficient dormant account management</li><li>Building automated data validation and reconciliation processes to ensure data integrity across banking systems</li><li>Collaborating with cross-functional teams to implement data governance and security best practices</li></ul></div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-header"><h3 class="timeline-title">Application Developer</h3><span class="timeline-date">Sep 2022 – Jul 2024</span></div><p class="timeline-company">Innovatily, Bengaluru</p><ul class="timeline-list"><li>Designed and implemented scalable ETL pipelines with Apache Airflow and AWS Glue, reducing job runtimes by 30%</li><li>Developed PySpark transformation jobs processing 5 TB+ of monthly ad data with zero data loss</li><li>Automated ingestion of campaign metrics from Google Ads, Meta, and Microsoft Ads via Python scripts and REST APIs</li><li>Architected the Blue Corona analytics platform aggregating 1M+ records from 10+ ad sources into MongoDB</li><li>Built interactive React.js dashboards with Ant Design, improving stakeholder decision-making speed by 25%</li></ul></div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-header"><h3 class="timeline-title">Data Engineering Intern</h3><span class="timeline-date">Jan 2022 – Aug 2022</span></div><p class="timeline-company">TechNova Analytics, Bengaluru</p><ul class="timeline-list"><li>Assisted in migrating legacy SQL workflows to PySpark on AWS Glue, achieving 20% cost savings</li><li>Developed Python scripts for data validation and anomaly detection, improving data quality by 15%</li><li>Created Power BI dashboards tracking key marketing KPIs, enabling real-time performance monitoring</li><li>Documented ETL processes and authored best-practice guidelines, reducing new-hire ramp-up time by 50%</li></ul></div></div>
         </div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="section py-20 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">WORK HISTORY</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Professional Experience</h2>
-            </div>
-            
-            <div class="relative max-w-3xl mx-auto">
-                <!-- Timeline line -->
-                <div class="absolute left-8 top-0 h-full w-0.5 bg-slate-200 dark:bg-slate-700"></div>
-                
-                <!-- TCS - Current Role -->
-                <div class="relative pl-16 pb-16 timeline-item">
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Systems Engineer - Data Engineer</h3>
-                            <span class="text-indigo-600 dark:text-indigo-400 font-medium">Aug 2024 – Present</span>
-                        </div>
-                        <h4 class="text-lg text-slate-600 dark:text-slate-400 mb-2">Tata Consultancy Services (TCS)</h4>
-                        <p class="text-sm text-indigo-500 dark:text-indigo-300 mb-4">Client: NatWest Banking Group</p>
-                        
-                        <ul class="space-y-3 text-slate-700 dark:text-slate-300">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Designing and implementing ETL pipelines using AWS Glue for processing dormant account data in compliance with banking regulations</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Developing and optimizing PostgreSQL database schemas and queries for efficient dormant account management</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Building automated data validation and reconciliation processes to ensure data integrity across banking systems</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Collaborating with cross-functional teams to implement data governance and security best practices for sensitive financial data</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Innovatily -->
-                <div class="relative pl-16 pb-16 timeline-item">
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Application Developer (Data Engineering & Full-Stack)</h3>
-                            <span class="text-indigo-600 dark:text-indigo-400 font-medium">Sep 2022 – Jul 2024</span>
-                        </div>
-                        <h4 class="text-lg text-slate-600 dark:text-slate-400 mb-4">Innovatily, Bengaluru</h4>
-                        
-                        <ul class="space-y-3 text-slate-700 dark:text-slate-300">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Designed and implemented scalable ETL pipelines with Apache Airflow and AWS Glue, reducing job runtimes by 30%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Developed PySpark transformation jobs processing 5 TB+ of monthly ad data with zero data loss</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Automated ingestion of campaign metrics from Google Ads, Meta, and Microsoft Ads via Python scripts and REST APIs</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Architected the Blue Corona analytics platform aggregating 1M+ records from 10+ ad sources into MongoDB</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Built interactive React.js dashboards with Ant Design, improving stakeholder decision-making speed by 25%</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- TechNova Analytics -->
-                <div class="relative pl-16 timeline-item">
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Data Engineering Intern</h3>
-                            <span class="text-indigo-600 dark:text-indigo-400 font-medium">Jan 2022 – Aug 2022</span>
-                        </div>
-                        <h4 class="text-lg text-slate-600 dark:text-slate-400 mb-4">TechNova Analytics, Bengaluru</h4>
-                        
-                        <ul class="space-y-3 text-slate-700 dark:text-slate-300">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Assisted in migrating legacy SQL workflows to PySpark on AWS Glue, achieving 20% cost savings</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Developed Python scripts for data validation and anomaly detection, improving data quality by 15%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Created Power BI dashboards tracking key marketing KPIs, enabling real-time performance monitoring</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
-                                <span>Documented ETL processes and authored best-practice guidelines, reducing new-hire ramp-up time by 50%</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <section class="projects" id="projects">
+        <div class="section-header reveal"><span class="section-tag">// PORTFOLIO</span><h2 class="section-title">Featured Projects</h2><p class="section-subtitle">Showcasing my best work in data engineering and development</p></div>
+        <div class="projects-grid">
+            <div class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="NatWest Banking Project"><span class="project-year">2024 - Present</span></div><div class="project-content"><h3 class="project-title">NatWest Dormant Accounts</h3><p class="project-subtitle">Banking ETL Pipeline</p><ul class="project-list"><li>ETL pipeline development using AWS Glue for dormant account processing</li><li>PostgreSQL optimization for account status tracking and reporting</li><li>Automated data validation ensuring accuracy of financial records</li></ul><div class="project-tech"><span>AWS Glue</span><span>PostgreSQL</span><span>Python</span></div></div></div>
+            <div class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Blue Corona Project"><span class="project-year">2023 - 2024</span></div><div class="project-content"><h3 class="project-title">Blue Corona (Polaris)</h3><p class="project-subtitle">Unified Ad Analytics Platform</p><ul class="project-list"><li>End-to-end ETL pipelines processing 5 TB+ monthly ad data</li><li>Optimized MongoDB schema improving query performance by 40%</li><li>Built secure OAuth integrations for automated ad account onboarding</li></ul><div class="project-tech"><span>Apache Airflow</span><span>MongoDB</span><span>React.js</span></div></div></div>
+            <div class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Scalekrut Project"><span class="project-year">2022 - 2023</span></div><div class="project-content"><h3 class="project-title">Scalekrut Job Portal</h3><p class="project-subtitle">Full-Stack Web Platform</p><ul class="project-list"><li>Recruitment portal with real-time listings and applicant tracking</li><li>Reduced front-end load times by 25% via lazy loading</li><li>Integrated REST APIs for job posting and candidate management</li></ul><div class="project-tech"><span>Next.js</span><span>React.js</span><span>Tailwind</span></div></div></div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section py-20 bg-gradient-to-br from-indigo-50/50 to-slate-50/50 dark:from-slate-800/50 dark:to-slate-900/50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">MY WORK</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Featured Projects</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- NatWest Dormant Accounts -->
-                <div class="bg-white/50 dark:bg-slate-800/50 rounded-2xl overflow-hidden shadow-lg project-card glass">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                             alt="NatWest Banking Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">NatWest Dormant Accounts</h3>
-                            <span class="text-sm bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 px-2 py-1 rounded-full glass">2024 - Present</span>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4">Banking ETL Pipeline</p>
-                        
-                        <ul class="space-y-2 text-slate-700 dark:text-slate-300 text-sm">
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>ETL pipeline development using AWS Glue for dormant account processing and regulatory compliance</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>PostgreSQL database optimization for efficient account status tracking and reporting</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Automated data validation ensuring accuracy and integrity of financial records</span>
-                            </li>
-                        </ul>
-                        
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">AWS Glue</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">PostgreSQL</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">Python</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Blue Corona -->
-                <div class="bg-white/50 dark:bg-slate-800/50 rounded-2xl overflow-hidden shadow-lg project-card glass">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                             alt="Blue Corona Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Blue Corona (Polaris)</h3>
-                            <span class="text-sm bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 px-2 py-1 rounded-full glass">2023 - 2024</span>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4">Unified Ad Analytics Platform</p>
-                        
-                        <ul class="space-y-2 text-slate-700 dark:text-slate-300 text-sm">
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>End-to-end ETL pipelines processing 5 TB+ of monthly ad data with Airflow orchestration</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Optimized MongoDB schema and indexing, improving query performance by 40%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Built secure OAuth integrations for automated ad account onboarding</span>
-                            </li>
-                        </ul>
-                        
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">Apache Airflow</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">MongoDB</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">React.js</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Scalekrut -->
-                <div class="bg-white/50 dark:bg-slate-800/50 rounded-2xl overflow-hidden shadow-lg project-card glass">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                             alt="Scalekrut Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Scalekrut Job Portal</h3>
-                            <span class="text-sm bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 px-2 py-1 rounded-full glass">2022 - 2023</span>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4">Full-Stack Web Platform</p>
-                        
-                        <ul class="space-y-2 text-slate-700 dark:text-slate-300 text-sm">
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Developed recruitment portal with Next.js & React.js featuring real-time listings and applicant tracking</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Reduced front-end load times by 25% via lazy loading and dynamic imports</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-indigo-500 mt-1 mr-2 text-xs"></i>
-                                <span>Integrated REST APIs for job posting, candidate management, and email notifications</span>
-                            </li>
-                        </ul>
-                        
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">Next.js</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">React.js</span>
-                            <span class="px-2 py-1 bg-slate-100/50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-full text-xs glass">Tailwind CSS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="education" id="education">
+        <div class="section-header reveal"><span class="section-tag">// QUALIFICATIONS</span><h2 class="section-title">Education & Certifications</h2></div>
+        <div class="edu-grid">
+            <div class="edu-card reveal"><h3>B.Tech in Computer Science</h3><p class="institution">Indira Institute of Technology and Sciences</p><p class="period">Jun 2019 – Jul 2022 | GPA: 7.9/10</p><div class="skill-tags"><span class="skill-tag">Data Structures</span><span class="skill-tag">Database Systems</span><span class="skill-tag">Cloud Computing</span><span class="skill-tag">Software Engineering</span></div></div>
+            <div class="edu-card reveal"><h3>Professional Certifications</h3><div class="cert-list"><div class="cert-item"><i class="fab fa-python"></i><div class="cert-info"><h4>Data Science with Python</h4><p>Besant Technologies • 2021</p></div></div><div class="cert-item"><i class="fas fa-database"></i><div class="cert-info"><h4>MongoDB for Data Engineers</h4><p>MongoDB University • 2022</p></div></div><div class="cert-item"><i class="fab fa-react"></i><div class="cert-info"><h4>React.js Developer</h4><p>SoloLearn • 2022</p></div></div></div></div>
+        </div>
+        <div class="section-header reveal" style="margin-top: 4rem;"><span class="section-tag">// LANGUAGES</span><h2 class="section-title">Languages I Speak</h2></div>
+        <div class="languages-grid reveal"><div class="lang-card"><i class="fas fa-language"></i><h4>English</h4><p>Professional</p></div><div class="lang-card"><i class="fas fa-language"></i><h4>Telugu</h4><p>Native</p></div><div class="lang-card"><i class="fas fa-language"></i><h4>Kannada</h4><p>Fluent</p></div><div class="lang-card"><i class="fas fa-language"></i><h4>Hindi</h4><p>Fluent</p></div></div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="section-header reveal"><span class="section-tag">// GET IN TOUCH</span><h2 class="section-title">Let's Work Together</h2><p class="section-subtitle">Have a project in mind? Let's create something amazing</p></div>
+        <div class="contact-container">
+            <div class="contact-info reveal"><h3>Contact Information</h3><p>I'm currently available for freelance work and full-time opportunities. If you have a project that you want to get started, think you need my help with something, or just want to say hello, then get in touch.</p><div class="contact-links"><a href="mailto:veerendra.connectnow@gmail.com" class="contact-link"><i class="fas fa-envelope"></i><span>veerendra.connectnow@gmail.com</span></a><a href="tel:+918234965959" class="contact-link"><i class="fas fa-phone"></i><span>+91 82349 65959</span></a><a href="https://linkedin.com/in/veerendra-r10" target="_blank" class="contact-link"><i class="fab fa-linkedin-in"></i><span>linkedin.com/in/veerendra-r10</span></a></div></div>
+            <div class="contact-form reveal"><h3>Send a Message</h3><form id="contactForm"><div class="form-group"><label for="name">Your Name</label><input type="text" id="name" name="name" required placeholder="John Doe"></div><div class="form-group"><label for="email">Your Email</label><input type="email" id="email" name="email" required placeholder="john@example.com"></div><div class="form-group"><label for="message">Your Message</label><textarea id="message" name="message" required placeholder="Tell me about your project..."></textarea></div><button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane" style="margin-left: 0.5rem;"></i></button></form></div>
         </div>
     </section>
 
-    <!-- Education & Certifications -->
-    <section class="section py-20 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <!-- Education -->
-                <div>
-                    <div class="text-center mb-8">
-                        <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">EDUCATION</span>
-                        <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Academic Background</h2>
-                    </div>
-                    
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">B.Tech in Computer Science</h3>
-                        <h4 class="text-lg text-slate-600 dark:text-slate-400 mb-4">Indira Institute of Technology and Sciences</h4>
-                        <p class="text-slate-700 dark:text-slate-300 mb-4">Jun 2019 – Jul 2022 | GPA: 7.9/10</p>
-                        
-                        <h5 class="font-medium text-slate-800 dark:text-white mb-2">Relevant Coursework:</h5>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Data Structures</span>
-                            <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Database Systems</span>
-                            <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Cloud Computing</span>
-                            <span class="px-3 py-1 bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-200 rounded-full text-sm glass">Software Engineering</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Certifications -->
-                <div>
-                    <div class="text-center mb-8">
-                        <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">CERTIFICATIONS</span>
-                        <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Professional Certifications</h2>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg glass card-hover">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Data Science with Python</h3>
-                            <p class="text-slate-600 dark:text-slate-400 mb-2">Besant Technologies</p>
-                            <div class="flex items-center text-sm text-slate-500 dark:text-slate-400">
-                                <i class="fas fa-calendar-alt mr-2"></i>
-                                <span>Issued 2021</span>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg glass card-hover">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">MongoDB for Data Engineers</h3>
-                            <p class="text-slate-600 dark:text-slate-400 mb-2">MongoDB University</p>
-                            <div class="flex items-center text-sm text-slate-500 dark:text-slate-400">
-                                <i class="fas fa-calendar-alt mr-2"></i>
-                                <span>Issued 2022</span>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg glass card-hover">
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">React.js Developer Certification</h3>
-                            <p class="text-slate-600 dark:text-slate-400 mb-2">SoloLearn</p>
-                            <div class="flex items-center text-sm text-slate-500 dark:text-slate-400">
-                                <i class="fas fa-calendar-alt mr-2"></i>
-                                <span>Issued 2022</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Languages -->
-    <section class="section py-20 bg-gradient-to-br from-indigo-50/50 to-slate-50/50 dark:from-slate-800/50 dark:to-slate-900/50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">LANGUAGE SKILLS</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Languages I Speak</h2>
-            </div>
-            
-            <div class="max-w-md mx-auto grid grid-cols-2 gap-6">
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg text-center glass card-hover">
-                    <div class="w-16 h-16 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4 glass">
-                        <i class="fas fa-language text-indigo-600 dark:text-indigo-400 text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">English</h3>
-                    <p class="text-slate-600 dark:text-slate-400">Professional</p>
-                </div>
-                
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg text-center glass card-hover">
-                    <div class="w-16 h-16 bg-green-100/50 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 glass">
-                        <i class="fas fa-language text-green-600 dark:text-green-400 text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">Telugu</h3>
-                    <p class="text-slate-600 dark:text-slate-400">Native</p>
-                </div>
-                
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg text-center glass card-hover">
-                    <div class="w-16 h-16 bg-purple-100/50 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 glass">
-                        <i class="fas fa-language text-purple-600 dark:text-purple-400 text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">Kannada</h3>
-                    <p class="text-slate-600 dark:text-slate-400">Fluent</p>
-                </div>
-                
-                <div class="bg-white/50 dark:bg-slate-800/50 p-6 rounded-2xl shadow-lg text-center glass card-hover">
-                    <div class="w-16 h-16 bg-yellow-100/50 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4 glass">
-                        <i class="fas fa-language text-yellow-600 dark:text-yellow-400 text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">Hindi</h3>
-                    <p class="text-slate-600 dark:text-slate-400">Fluent</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section py-20 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2 inline-block">GET IN TOUCH</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white">Contact Me</h2>
-            </div>
-            
-            <div class="flex flex-col md:flex-row gap-12">
-                <div class="md:w-1/2">
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-6">Contact Information</h3>
-                        
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <div class="bg-indigo-100/50 dark:bg-indigo-900/30 p-3 rounded-lg mr-4 glass">
-                                    <i class="fas fa-envelope text-indigo-600 dark:text-indigo-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-slate-700 dark:text-slate-300">Email</h4>
-                                    <a href="mailto:veerendra.connectnow@gmail.com" class="text-indigo-600 dark:text-indigo-400 hover-underline">veerendra.connectnow@gmail.com</a>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="bg-green-100/50 dark:bg-green-900/30 p-3 rounded-lg mr-4 glass">
-                                    <i class="fas fa-phone text-green-600 dark:text-green-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-slate-700 dark:text-slate-300">Phone</h4>
-                                    <a href="tel:+918234965959" class="text-indigo-600 dark:text-indigo-400 hover-underline">+91 82349 65959</a>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="bg-indigo-100/50 dark:bg-indigo-900/30 p-3 rounded-lg mr-4 glass">
-                                    <i class="fab fa-linkedin-in text-indigo-600 dark:text-indigo-400"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-slate-700 dark:text-slate-300">LinkedIn</h4>
-                                    <a href="https://linkedin.com/in/veerendra-r10" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover-underline">linkedin.com/in/veerendra-r10</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2">
-                    <div class="bg-white/50 dark:bg-slate-800/50 p-8 rounded-2xl shadow-lg glass">
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-6">Send Me a Message</h3>
-                        
-                        <form id="contact-form" class="space-y-4">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
-                                <input type="text" id="name" name="name" required 
-                                       class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700/50 dark:text-white glass">
-                            </div>
-                            
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
-                                <input type="email" id="email" name="email" required 
-                                       class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700/50 dark:text-white glass">
-                            </div>
-                            
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Message</label>
-                                <textarea id="message" name="message" rows="5" required 
-                                          class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700/50 dark:text-white glass"></textarea>
-                            </div>
-                            
-                            <button type="submit" 
-                                    class="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-medium rounded-lg transition duration-300 shadow-lg hover:shadow-xl">
-                                Send Message
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-slate-800 dark:bg-slate-900 text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <a href="#" class="text-2xl font-bold text-white hover-underline">Veerendra<span class="text-indigo-400">.</span></a>
-                    <p class="text-slate-400 mt-2">Data Engineer & Full-Stack Developer</p>
-                </div>
-                
-                <div class="flex space-x-6">
-                    <a href="https://linkedin.com/in/veerendra-r10" target="_blank" class="text-slate-400 hover:text-white transition duration-300">
-                        <i class="fab fa-linkedin-in text-2xl"></i>
-                    </a>
-                    <a href="https://github.com" target="_blank" class="text-slate-400 hover:text-white transition duration-300">
-                        <i class="fab fa-github text-2xl"></i>
-                    </a>
-                    <a href="mailto:veerendra.connectnow@gmail.com" class="text-slate-400 hover:text-white transition duration-300">
-                        <i class="fas fa-envelope text-2xl"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
-                <p>&copy; 2025 Veerendra R. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="hidden fixed bottom-8 right-8 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl toast glass">
-        Message sent successfully!
-    </div>
+    <footer><div class="footer-content"><div class="footer-logo">Veerendra.</div><p class="footer-text">Data Engineer & Full-Stack Developer</p><div class="social-links"><a href="https://linkedin.com/in/veerendra-r10" target="_blank"><i class="fab fa-linkedin-in"></i></a><a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a><a href="mailto:veerendra.connectnow@gmail.com"><i class="fas fa-envelope"></i></a></div><p class="copyright">© 2025 Veerendra R. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast">Message sent successfully!</div>
 
     <script>
-        // Theme toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-        const html = document.documentElement;
-        
-        // Check for saved user preference or use OS preference
-        const userTheme = localStorage.getItem('theme');
-        const osTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        
-        if (userTheme === 'dark' || (!userTheme && osTheme === 'dark')) {
-            html.classList.add('dark');
-        }
-        
-        // Toggle theme
-        function toggleTheme() {
-            html.classList.toggle('dark');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-        }
-        
-        themeToggle.addEventListener('click', toggleTheme);
-        themeToggleMobile.addEventListener('click', toggleTheme);
-        
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-        
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-md');
-            } else {
-                navbar.classList.remove('shadow-md');
-            }
-        });
-        
-        // Active nav link based on scroll position
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                
-                if (pageYOffset >= sectionTop - 300) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Contact form submission
-        const contactForm = document.getElementById('contact-form');
-        const toast = document.getElementById('toast');
-        
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Here you would typically send the form data to a server
-            // For this demo, we'll just show a success message
-            
-            // Reset form
-            contactForm.reset();
-            
-            // Show toast
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3500);
-        });
+        const cursor = document.querySelector('.cursor'), cursorFollower = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; setTimeout(() => { cursorFollower.style.left = e.clientX + 'px'; cursorFollower.style.top = e.clientY + 'px'; }, 50); });
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) { const particle = document.createElement('div'); particle.className = 'particle'; particle.style.left = Math.random() * 100 + '%'; particle.style.animationDelay = Math.random() * 15 + 's'; particle.style.animationDuration = (15 + Math.random() * 10) + 's'; particlesContainer.appendChild(particle); }
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+        const menuToggle = document.getElementById('menuToggle'), navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => { revealElements.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active'); }); };
+        window.addEventListener('scroll', revealOnScroll); window.addEventListener('load', revealOnScroll);
+        const contactForm = document.getElementById('contactForm'), toast = document.getElementById('toast');
+        contactForm.addEventListener('submit', (e) => { e.preventDefault(); contactForm.reset(); toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3000); });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
+        document.querySelectorAll('a, button, .skill-card, .project-card').forEach(el => { el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%, -50%) scale(1.5)'; cursor.style.borderColor = 'var(--accent)'; }); el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; cursor.style.borderColor = 'var(--primary)'; }); });
     </script>
 </body>
 </html>
